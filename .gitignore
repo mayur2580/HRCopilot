@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+.env
+
+# Node / Frontend
+node_modules/
+dist/
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+
+# AI / embeddings
+faiss_index/
+vectorstore/
+*.pkl
+
+# IDE
+.vscode/
+.idea/
+
+# Secrets
+*.json
+
+# AI / credentials
+drive_loader/
+credentials.json
+
+# Large files
+*.zip
+
+# vector db
+faiss_index/
+vectorstore/
+

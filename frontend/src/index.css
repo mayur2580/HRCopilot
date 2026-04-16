@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 220 20% 97%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 230 70% 56%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
+
+    --accent: 168 60% 48%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 230 70% 56%;
+
+    --radius: 0.75rem;
+
+    --sidebar-background: 220 20% 98%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 230 70% 56%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 14% 96%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 230 70% 56%;
+
+    --gradient-from: 230 70% 56%;
+    --gradient-to: 168 60% 48%;
+
+    --user-bubble: 230 70% 96%;
+    --user-bubble-foreground: 230 50% 30%;
+    --assistant-bubble: 0 0% 100%;
+    --assistant-bubble-foreground: 222 47% 11%;
+  }
+
+  .dark {
+    --background: 228 33% 7%;
+    --foreground: 226 30% 92%;
+
+    --card: 228 30% 10%;
+    --card-foreground: 226 30% 92%;
+
+    --popover: 228 30% 10%;
+    --popover-foreground: 226 30% 92%;
+
+    --primary: 230 70% 62%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 228 25% 16%;
+    --secondary-foreground: 226 30% 92%;
+
+    --muted: 228 20% 15%;
+    --muted-foreground: 226 15% 65%;
+
+    --accent: 168 55% 45%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 228 20% 16%;
+    --input: 228 20% 16%;
+    --ring: 230 70% 62%;
+
+    --sidebar-background: 228 35% 6%;
+    --sidebar-foreground: 226 30% 92%;
+    --sidebar-primary: 230 70% 62%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 228 20% 12%;
+    --sidebar-accent-foreground: 226 30% 92%;
+    --sidebar-border: 228 20% 14%;
+    --sidebar-ring: 230 70% 62%;
+
+    --gradient-from: 230 70% 62%;
+    --gradient-to: 168 55% 45%;
+
+    --user-bubble: 230 60% 18%;
+    --user-bubble-foreground: 226 40% 88%;
+    --assistant-bubble: 228 25% 12%;
+    --assistant-bubble-foreground: 226 30% 92%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  }
+
+  .dark body {
+    background:
+      radial-gradient(circle at top left, hsl(230 70% 62% / 0.12), transparent 28%),
+      radial-gradient(circle at top right, hsl(168 55% 45% / 0.08), transparent 25%),
+      hsl(var(--background));
+  }
+}
+
+@layer utilities {
+  .gradient-brand {
+    background: linear-gradient(135deg, hsl(var(--gradient-from)), hsl(var(--gradient-to)));
+  }
+
+  .typing-dot {
+    @apply w-2 h-2 rounded-full bg-muted-foreground/60;
+    animation: typing 1.4s infinite ease-in-out both;
+  }
+
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+}
+
+@keyframes typing {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
