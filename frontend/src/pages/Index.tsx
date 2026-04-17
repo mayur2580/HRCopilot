@@ -114,39 +114,88 @@ export default function Index() {
     }
   }
 
+  // async function sendMessage(customMessage?: string) {
+  //   const messageToSend = (customMessage ?? input).trim();
+  //   if (!messageToSend) return;
+
+  //   setLoading(true);
+
+  //   try {
+  //     const response = await fetch(`${API_BASE}/chat`, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({ session_id: sessionId, message: messageToSend }),
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error("Backend request failed");
+  //     }
+
+  //     const data = await response.json();
+
+  //     setMessages(data.messages || []);
+  //     setDraft(data.pending_email_draft || null);
+  //     setLastAgent(data.last_agent || "");
+  //     setLastEval(data.last_eval || null);
+  //     setInput("");
+
+  //     upsertRecentChat(sessionId, messageToSend);
+  //   } catch {
+  //     toast.error("Could not reach backend. Check that FastAPI is running on port 8000.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // }
   async function sendMessage(customMessage?: string) {
-    const messageToSend = (customMessage ?? input).trim();
-    if (!messageToSend) return;
+  const messageToSend = (customMessage ?? input).trim();
+  if (!messageToSend) return;
 
-    setLoading(true);
+  // ✅ 1. SHOW USER MESSAGE IMMEDIATELY
+  setMessages((prev) => [
+    ...prev,
+    { role: "user", content: messageToSend },
+  ]);
 
-    try {
-      const response = await fetch(`${API_BASE}/chat`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ session_id: sessionId, message: messageToSend }),
-      });
+  setInput("");
+  setLoading(true);
 
-      if (!response.ok) {
-        throw new Error("Backend request failed");
-      }
+  try {
+    const response = await fetch(`${API_BASE}/chat`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        session_id: sessionId,
+        message: messageToSend,
+      }),
+    });
 
-      const data = await response.json();
-
-      setMessages(data.messages || []);
-      setDraft(data.pending_email_draft || null);
-      setLastAgent(data.last_agent || "");
-      setLastEval(data.last_eval || null);
-      setInput("");
-
-      upsertRecentChat(sessionId, messageToSend);
-    } catch {
-      toast.error("Could not reach backend. Check that FastAPI is running on port 8000.");
-    } finally {
-      setLoading(false);
+    if (!response.ok) {
+      throw new Error("Backend request failed");
     }
-  }
 
+    const data = await response.json();
+
+    // ✅ 2. ONLY ADD ASSISTANT MESSAGE (NOT FULL REPLACE)
+    const assistantMessages = (data.messages || []).filter(
+      (m: Message) => m.role === "assistant"
+    );
+
+    setMessages((prev) => [
+      ...prev,
+      ...assistantMessages.slice(-1), // only latest assistant reply
+    ]);
+
+    setDraft(data.pending_email_draft || null);
+    setLastAgent(data.last_agent || "");
+    setLastEval(data.last_eval || null);
+
+    upsertRecentChat(sessionId, messageToSend);
+  } catch {
+    toast.error("Could not reach backend.");
+  } finally {
+    setLoading(false);
+  }
+}
   async function confirmDraft() {
     setLoading(true);
 
