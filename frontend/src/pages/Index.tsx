@@ -114,59 +114,53 @@ export default function Index() {
     }
   }
 
-  // async function sendMessage(customMessage?: string) {
-  //   const messageToSend = (customMessage ?? input).trim();
-  //   if (!messageToSend) return;
+//   async function sendMessage(customMessage?: string) {
+//   const messageToSend = (customMessage ?? input).trim();
+//   if (!messageToSend) return;
 
-  //   setLoading(true);
+//   setLoading(true);
 
-  //   try {
-  //     const response = await fetch(`${API_BASE}/chat`, {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({ session_id: sessionId, message: messageToSend }),
-  //     });
+//   try {
+//     const response = await fetch(`${API_BASE}/chat`, {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify({ session_id: sessionId, message: messageToSend }),
+//     });
 
-  //     if (!response.ok) {
-  //       throw new Error("Backend request failed");
-  //     }
+//     if (!response.ok) {
+//       throw new Error("Backend request failed");
+//     }
 
-  //     const data = await response.json();
+//     const data = await response.json();
 
-  //     setMessages(data.messages || []);
-  //     setDraft(data.pending_email_draft || null);
-  //     setLastAgent(data.last_agent || "");
-  //     setLastEval(data.last_eval || null);
-  //     setInput("");
+//     setMessages(data.messages || []);
+//     setDraft(data.pending_email_draft || null);
+//     setLastAgent(data.last_agent || "");
+//     setLastEval(data.last_eval || null);
+//     setInput("");
 
-  //     upsertRecentChat(sessionId, messageToSend);
-  //   } catch {
-  //     toast.error("Could not reach backend. Check that FastAPI is running on port 8000.");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }
+//     upsertRecentChat(sessionId, messageToSend);
+//   } catch {
+//     toast.error("Could not reach backend. Check that FastAPI is running on port 8000.");
+//   } finally {
+//     setLoading(false);
+//   }
+// }
   async function sendMessage(customMessage?: string) {
   const messageToSend = (customMessage ?? input).trim();
   if (!messageToSend) return;
 
-  // ✅ 1. SHOW USER MESSAGE IMMEDIATELY
-  setMessages((prev) => [
-    ...prev,
-    { role: "user", content: messageToSend },
-  ]);
-
-  setInput("");
   setLoading(true);
+  setInput("");
+
+  // ✅ Optimistically show the user's message immediately
+  setMessages((prev) => [...prev, { role: "user", content: messageToSend }]);
 
   try {
     const response = await fetch(`${API_BASE}/chat`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        session_id: sessionId,
-        message: messageToSend,
-      }),
+      body: JSON.stringify({ session_id: sessionId, message: messageToSend }),
     });
 
     if (!response.ok) {
@@ -175,23 +169,16 @@ export default function Index() {
 
     const data = await response.json();
 
-    // ✅ 2. ONLY ADD ASSISTANT MESSAGE (NOT FULL REPLACE)
-    const assistantMessages = (data.messages || []).filter(
-      (m: Message) => m.role === "assistant"
-    );
-
-    setMessages((prev) => [
-      ...prev,
-      ...assistantMessages.slice(-1), // only latest assistant reply
-    ]);
-
+    setMessages(data.messages || []);
     setDraft(data.pending_email_draft || null);
     setLastAgent(data.last_agent || "");
     setLastEval(data.last_eval || null);
 
     upsertRecentChat(sessionId, messageToSend);
   } catch {
-    toast.error("Could not reach backend.");
+    toast.error("Could not reach backend. Check that FastAPI is running on port 8000.");
+    // ✅ Remove the optimistic message on failure
+    setMessages((prev) => prev.filter((_, i) => i !== prev.length - 1));
   } finally {
     setLoading(false);
   }

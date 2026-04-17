@@ -10,7 +10,7 @@ from agent.orchestrator import graph
 
 try:
     from main import ensure_index
-except Exception:  # pragma: no cover
+except Exception:
     ensure_index = None
 
 
@@ -101,18 +101,13 @@ def process_user_message(session_id: str, message: str) -> dict[str, Any]:
     session = SessionManager.get_or_create(session_id)
     initial_state = _build_graph_input(session, message)
 
-    # ── LangSmith Thread config ──────────────────────────────────────────
-    # session_id is already a stable, per-conversation identifier from the
-    # frontend. Passing it as `session_id` in metadata tells LangSmith to
-    # group every trace from this conversation under one Thread.
     langsmith_config = {
         "run_name": "hr-assistant",
         "tags":     ["hr-assistant"],
         "metadata": {
-            "session_id": session_id,   # ← groups traces into a Thread
+            "session_id": session_id,
         },
     }
-    # ────────────────────────────────────────────────────────────────────
 
     final_state: dict[str, Any] = {}
     for chunk in graph.stream(initial_state, config=langsmith_config, stream_mode="updates"):
