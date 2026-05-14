@@ -31,7 +31,9 @@ http://127.0.0.1:8000
 ```
 
 # Git commands
+```bash
 git add .
 git commit -m "Updated code"
 git push
+```
 
