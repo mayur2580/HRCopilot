@@ -81,7 +81,11 @@ llm = ChatOpenAI(
     model="openai/gpt-oss-120b:novita",
     temperature=0.3
 )
-
+# llm = ChatOpenAI(
+#     api_key=os.environ.get("OPENAI_API_KEY"),
+#     model="gpt-4.1-mini",   # or gpt-4.1, gpt-4o, etc.
+#     temperature=0.3
+# )
 # -------------------------
 # PROMPT
 # -------------------------

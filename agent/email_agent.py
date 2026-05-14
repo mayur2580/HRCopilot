@@ -16,7 +16,7 @@ from langsmith import traceable
 llm = ChatGroq(
     groq_api_key=os.environ.get("GROQ_API_KEY"),
     model="meta-llama/llama-4-scout-17b-16e-instruct",
-    # model="qwen/qwen3-32b",
+    # model="llama-3.3-70b-versatile",
     temperature=0.3
 )
 
