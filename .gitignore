@@ -1,26 +1,38 @@
-venv/
-.venv/
-env/
-
-node_modules/
-
+# Python
 __pycache__/
 *.pyc
-
-dist/
-build/
-
-.idea/
-.vscode/
-
-*.log
-
-.DS_Store
-
+venv/
 .env
 
-*.csv
+# Node / Frontend
+node_modules/
+dist/
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+
+# AI / embeddings
+faiss_index/
+vectorstore/
 *.pkl
-*.h5
-*.pt
-*.bin
+
+# IDE
+.vscode/
+.idea/
+
+# Secrets
+*.json
+
+# AI / credentials
+drive_loader/
+credentials.json
+
+# Large files
+*.zip
+
+# vector db
+faiss_index/
+vectorstore/
