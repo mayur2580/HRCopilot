@@ -2,7 +2,7 @@
 
 ## Backend setup
 
-From your project root:
+From your project root :
 
 Run backend:
 
