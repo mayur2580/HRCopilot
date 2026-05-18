@@ -3,9 +3,9 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.app.core.config import settings
-from backend.app.routers.chat import router as chat_router
-from backend.app.services.hr_runtime import bootstrap_runtime
+from app.core.config import settings
+from app.routers.chat import router as chat_router
+from app.services.hr_runtime import bootstrap_runtime
 
 
 @asynccontextmanager
