@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException
 
-from backend.app.schemas.chat import ChatRequest, ChatResponse, SessionResponse
-from backend.app.services.hr_runtime import SessionManager, get_session_payload, process_user_message
+from app.schemas.chat import ChatRequest, ChatResponse, SessionResponse
+from app.services.hr_runtime import SessionManager, get_session_payload, process_user_message
 
 router = APIRouter(prefix="/chat", tags=["chat"])
 
