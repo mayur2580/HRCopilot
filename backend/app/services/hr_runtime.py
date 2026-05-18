@@ -4,8 +4,8 @@ from typing import Any
 
 from langchain_core.messages import AIMessage, BaseMessage, HumanMessage
 
-from backend.app.core.config import settings
-from backend.app.services.session_store import session_store
+from app.core.config import settings
+from app.services.session_store import session_store
 from agent.orchestrator import graph
 
 try:
