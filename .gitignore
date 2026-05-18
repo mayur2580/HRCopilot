@@ -4,7 +4,9 @@ __pycache__/
 venv/
 .venv/
 .env
-
+.env
+credentials.json
+drive_loader/credentials.json
 # Node / Frontend
 node_modules/
 dist/
